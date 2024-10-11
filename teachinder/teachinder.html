@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="teachinder_style.css">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <title>Teachinder</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <div class="head">
+                <h1>Teachinder</h1>
+                <div class="search-bar">
+                    <input id="searchInput" type="text" placeholder="Name, note or age to search">
+                    <button class="search" id="searchBtn">Search</button>
+                </div>
+            </div>
+
+
+            <div class="sortTeacher">
+                <nav>
+                    <ul>
+                        <li><a href="#">Teachers</a></li>
+                        <li><a href="#">Statistics</a></li>
+                        <li><a href="#">Favorites</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </nav>
+                <button class="add-teacher">Add teacher</button>
+            </div>
+        </header>
+
+        <hr>
+
+        <main>
+
+            <section class="top-teachers">
+                <h2>Top Teachers</h2>
+
+                <div class="filters">
+                    <label for="age">Age</label>
+                    <select id="age" name="age">
+                        <option value="select">Select age</option>
+                        <option value="18-30">18-30</option>
+                        <option value="31-40">31-40</option>
+                        <option value="41-50">41-50</option>
+                        <option value="51+">51+</option>
+                    </select>
+
+                    <label for="region">Country</label>
+                    <select id="region" name="region">
+                        <option value="select">Select country</option>
+                    </select>
+
+                    <label for="sex">Sex</label>
+                    <select id="sex" name="sex">
+                        <option value="select">Select sex</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+
+                    <label class="with-checkbox">
+                        <input type="checkbox" id="only-photo"> Only with photo
+                    </label>
+
+                    <label class="with-checkbox">
+                        <input type="checkbox" id="only-favorites"> Only favorites
+                    </label>
+
+                </div>
+
+                <div class="teachers-list"></div>
+
+                <div class="pagination">
+                    <button id="prev-page" disabled>Previous</button>
+                    <span id="page-info">1</span>
+                    <button id="next-page">Next</button>
+                </div>
+            </section>
+
+            <hr>
+
+            <section class="statistics">
+                <h2>Statistics</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th id="nameHeader">Name <span class="sort-arrow">&#9660;</span></th>
+                            <th id="specialtyHeader">Specialty <span class="sort-arrow">&#9660;</span></th>
+                            <th id="ageHeader">Age <span class="sort-arrow">&#9660;</span></th>
+                            <th id="genderHeader">Gender <span class="sort-arrow">&#9660;</span></th>
+                            <th id="countryHeader">Country <span class="sort-arrow">&#9660;</span></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </section>
+
+            <hr>
+
+            <section class="favorites">
+                <h2>Favorites</h2>
+                <div class="favorite-teachers-container">
+
+                    <div class="scroll-left">
+                        <button class="arrow-icon">&lt;</button>
+                    </div>
+
+                    <div class="favorite-teachers-list" id="favoriteTeachersList">
+                    </div>
+
+                    <div class="scroll-right">
+                        <button class="arrow-icon">&gt;</button>
+                    </div>
+
+                </div>
+            </section>
+
+            <hr>
+
+            <section class="chart">
+                <h2>Chart</h2>
+
+                <div class="chart-container">
+                    <canvas id="genderChart" width= 250px , height= 250px ></canvas>
+                    <canvas id="subjectChart" width= 250px , height= 250px></canvas>
+                    <canvas id="countryChart" width= 250px , height= 250px></canvas>
+                    
+                </div>
+            </section>
+
+            <hr>
+
+            <section class="footer">
+
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium quia fuga distinctio,
+                    consequatur obcaecati sint! Recusandae mollitia officia error et? Animi iusto doloremque recusandae
+                    deleniti velit explicabo eos consequatur delectus?
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Id velit exercitationem error voluptas
+                    harum atque, quam, quisquam minima officiis nesciunt veritatis architecto dolorem itaque ipsum fugit
+                    aut ut ab beatae.
+                </p>
+
+                <div class="sortTeacher">
+                    <nav>
+                        <ul>
+                            <li><a href="#">Teachers</a></li>
+                            <li><a href="#">Statistics</a></li>
+                            <li><a href="#">Favorites</a></li>
+                            <li><a href="#">About</a></li>
+                        </ul>
+                    </nav>
+                    <button id="addTeacherBtn" class="add-teacher">Add teacher</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+
+
+    <div id="teacherModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img class="favorite-star" src="/images/halfStar.png" onclick="toggleFavoriteStar(this)" />
+                <span class="close" onclick="closeTeacherInfo()">&times;</span>
+            </div>
+            <div class="teacher-info-container">
+                <div class="teacher-photo-container">
+                    <img id="teacher-photo" src="" alt="Teacher Photo">
+                </div>
+                <div class="teacher-details">
+                    <h2 id="teacher-name"></h2>
+                    <p id="teacher-specialty"></p>
+                    <p id="teacher-location"></p>
+                    <p><a id="teacher-email" href=""></a></p>
+                    <p id="teacher-phone"></p>
+                    <p id="teacher-age"></p>
+                    <p id="teacher-gender"></p>
+                    <p id="teacher-birthday"></p>
+                    <div id="teacher-map-container">
+                        <div id="teacher-map" style="height: 250px; width: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="teacherAddModal" class="teacher-modal">
+        <div class="teacher-modal-content">
+            <span class="teacher-close-btn">&times;</span>
+            <h2 class="teacher-modal-title">Add Teacher</h2>
+            <form id="teacherAddForm">
+                <label for="teacherFirstName">Fisrt name</label>
+                <input type="text" id="teacherFirstName" class="teacher-input" placeholder="Enter name" required>
+
+                <label for="teacherLastName">Last name</label>
+                <input type="text" id="teacherLastName" class="teacher-input" placeholder="Enter name" required>
+
+                <label for="teacherSpeciality">Speciality</label>
+                <select id="teacherSpeciality" class="teacher-input">
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+
+                </select>
+
+                <div class="formGroup">
+                    <div class="countryCity">
+
+                        <label for="teacherCountry">Country</label>
+                        <select id="teacherCountry" class="teacher-input">
+                            <option value="Ukraine">Ukraine</option>
+                            <option value="USA">USA</option>
+                            <option value="UK">UK</option>
+
+                        </select>
+
+                        <label for="teacherCity">City</label>
+                        <input type="text" id="teacherCity" class="teacher-input" placeholder="Enter city" required>
+
+                    </div>
+
+                    <div class="phoneEmail">
+
+                        <label for="teacherEmail">Email</label>
+                        <input type="email" id="teacherEmail" class="teacher-input" placeholder="Enter email" required>
+
+                        <label for="teacherPhone">Phone</label>
+                        <input type="tel" id="teacherPhone" class="teacher-input" placeholder="Enter phone" required>
+
+                    </div>
+
+                </div>
+
+                <label for="teacherDob">Date of Birth</label>
+                <input type="date" id="teacherDob" class="teacher-input" required>
+
+                <div class="teacher-gender">
+                    <label>Sex</label>
+                    <input type="radio" id="teacherMale" name="teacherSex" value="male">
+                    <label for="teacherMale">Male</label>
+                    <input type="radio" id="teacherFemale" name="teacherSex" value="female">
+                    <label for="teacherFemale">Female</label>
+                </div>
+
+                <label for="teacherNotes">Notes (optional)</label>
+                <textarea id="teacherNotes" class="teacher-input" placeholder="Enter any notes"></textarea>
+
+                <button type="submit" class="teacher-submit-btn">Add</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="teachinder_script.js"></script>
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+
+
+
+
+
+
+</body>
+
+
+
+</html>
